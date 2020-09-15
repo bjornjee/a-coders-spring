@@ -18,19 +18,24 @@ public class TokenUtil {
 
     //encrypt the username and password and return token
     public String encoder(String username, String password){
-        String strEncode = String.format("%s:%s", username,password);
+        String strEncode = String.format("%s∑%s", username,password);
         String encryptedPW = Base64.getEncoder().encodeToString(strEncode.getBytes());
         return encryptedPW;
     }
 
     //decrypt to check if its registered user
-    public UtilModel decoder(String encryptedStr){
+    public UtilModel decoder(String encryptedStr) throws IllegalArgumentException {
     	log.info("In decoder()");
-        byte[] decodedBytes = Base64.getMimeDecoder().decode(encryptedStr);
+    	byte[] decodedBytes;
+    	try {
+    		decodedBytes = Base64.getMimeDecoder().decode(encryptedStr);
+    	} catch (IllegalArgumentException ex ) {
+    		throw ex;
+    	}
         String decodedStr = new String(decodedBytes);
         log.info("decoded token: {}",decodedStr);
         //Check for string structure
-        String regex = "[a-zA-Z0-9?-_!@]+:[a-zA-Z0-9?-_!@#$%$^&*()-=+]+";
+        String regex = "[a-zA-Z0-9 !\"#$%&'()*+,-./:;<=>?@\\^_`{|}~]+∑[a-zA-Z0-9 !\"#$%&'()*+,-./:;<=>?@\\^_`{|}~]+";
         Pattern r = Pattern.compile(regex);
         Matcher matched = r.matcher(decodedStr);
         log.info("Decoded str match regex: {}",String.valueOf(matched.matches()));
@@ -38,7 +43,7 @@ public class TokenUtil {
         if (!matched.matches()) {
             return null;
         }
-        String[] arr = decodedStr.split(":");
+        String[] arr = decodedStr.split("∑");
         String user = arr[0];
         String pass = arr[1];
         log.info("u: {}, p:  {}",user,pass);

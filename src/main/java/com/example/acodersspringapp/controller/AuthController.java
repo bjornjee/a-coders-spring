@@ -24,13 +24,24 @@ public class AuthController {
 	
 	@PostMapping(value="/register")
 	public ResponseEntity<?> register(@RequestBody RegisterRequestModel model) {
-		String token = accountService.register(model);
+		String token;
+		try {
+			token = accountService.register(model);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
 		return ResponseEntity.ok(token);
 	}
 	
 	@GetMapping(value="/login")
 	public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-		String token = accountService.login(username, password);
+		String token;
+		try {
+			token = accountService.login(username, password);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 		return ResponseEntity.ok(token);
 	}
 }

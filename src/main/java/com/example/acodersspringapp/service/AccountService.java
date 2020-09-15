@@ -26,7 +26,7 @@ public class AccountService {
 	@Autowired
 	Base64.Encoder passwordEncoder;
 
-	public String register(RegisterRequestModel model) {
+	public String register(RegisterRequestModel model) throws Exception {
 		String username = model.getUsername();
 		// Encrypt password
 		String password = passwordEncoder.encodeToString(model.getPassword().getBytes());
@@ -52,17 +52,17 @@ public class AccountService {
 			token = tokenUtil.encoder(username, password);
 
 		} else {
-			log.info("Username {} is already taken", username);
+			throw new Exception(String.format("Username %s is already taken", username));
 		}
 		return token;
 	}
 
-	public String login(String username, String password) {
+	public String login(String username, String password) throws Exception {
 		String encrPassword = passwordEncoder.encodeToString(password.getBytes());
 		AccountEntity acc = accountRepo.findAccountByUsernameAndPassword(username, encrPassword);
 		String token = "";
 		if (acc == null) {
-			log.info("Either username or passwors is incorrect");
+			throw new Exception("Either username or password is incorrect");
 		} else {
 			token = tokenUtil.encoder(username, encrPassword);
 		}
