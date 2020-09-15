@@ -31,7 +31,7 @@ public class TradeService {
 	
 	public void acceptTrades(String username, NewTradesRequestModel model) {
 		TradeType type = model.getType().toUpperCase().equals("BUY") ? TradeType.BUY : TradeType.SELL;
-		TradeState state = TradeState.FILLED;
+		TradeState state = TradeState.CREATED;
 		TradeInstrument instrument = getInstrument(model.getInstrument());
 		Date now = new Date(System.currentTimeMillis());
 		//Insert into trade collection
@@ -67,6 +67,9 @@ public class TradeService {
 			case "SWAP":
 				out = TradeInstrument.SWAP;
 				break;
+			case "STOCK":
+				out = TradeInstrument.STOCK;
+				break;
 		}
 		return out;
 	}
@@ -89,13 +92,20 @@ public class TradeService {
 				HashMap<String,AssetInfoModel> assets = portfolio.get(instr);
 				if (!assets.containsKey(ticker)) {
 					assets.put(ticker, new AssetInfoModel(trade));
+					portfolio.put(instr, assets);
 				} else {
 					AssetInfoModel asset = assets.get(ticker);
-					asset.setQuantity(asset.getQuantity() + trade.getQuantity());
-					asset.setTotalCost(asset.getTotalCost() + trade.getPrice());
+					//logic for buy/sell
+					int qtyDelta = trade.getType().equals(TradeType.BUY) ? trade.getQuantity() : -trade.getQuantity();
+					double priceDelta = qtyDelta * trade.getPrice();
+					asset.setQuantity(asset.getQuantity() + qtyDelta);		
+					asset.setTotalCost(asset.getTotalCost() + priceDelta);
 					assets.put(ticker, asset);
+					portfolio.put(instr, assets);
 				}
 			}
+			
+
 		}
 		//convert inner hashmap to list
 		HashMap<String,List<AssetInfoModel>> convertedPortfolio = new HashMap<>();

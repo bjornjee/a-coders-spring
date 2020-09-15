@@ -2,6 +2,7 @@ package com.example.acodersspringapp.model;
 
 import com.example.acodersspringapp.entity.TradeEntity;
 import com.example.acodersspringapp.entity.TradeInstrument;
+import com.example.acodersspringapp.entity.TradeType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class AssetInfoModel {
 	public AssetInfoModel(TradeEntity e) {
 		ticker = e.getTicker();
 		quantity = e.getQuantity();
-		totalCost = e.getPrice();
+		totalCost = e.getType().equals(TradeType.BUY) ? e.getPrice() * this.quantity : -e.getPrice() * this.quantity;
 		instrument =e.getInstrument();
 	}
 }
