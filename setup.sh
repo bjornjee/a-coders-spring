@@ -1,0 +1,1 @@
+mongoimport --type csv -d acoders -c market_data --headerline --drop init.csv
