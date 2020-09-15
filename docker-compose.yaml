@@ -7,7 +7,7 @@ services:
   mongodb:
     container_name: mongodb
     build:
-      context: .
+      context: ./a-coders-spring
       dockerfile: Dockerfile-mongo
     image: mongodb
     ports:
@@ -19,7 +19,7 @@ services:
   spring-app:
     container_name: spring-app
     build:
-      context: ./a-coders-spring-app
+      context: ./a-coders-spring
       dockerfile: Dockerfile-spring
     image: spring-app
     ports:
@@ -31,9 +31,9 @@ services:
     container_name: simulator
     build:
       context: ./a-coders-trade-simulator
-      dockerfile: Dockerfile-spring
+      dockerfile: Dockerfile
     image: simulator
     links:
       - mongodb:mongodb
-      post:
-        - "8081:8080"
+    ports:
+      - "8081:8080"
