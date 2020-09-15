@@ -13,6 +13,8 @@ public interface TradeRepository extends MongoRepository<TradeEntity, Long>{
 
 	@Query("{'username':?0}")
 	List<TradeEntity> findAllByUsername(String username);
-
+	
+	@Query("{'username':?0,'state':'FILLED'}")
+	List<TradeEntity> findAllFilledTradesByUsername(String username);
 	
 }

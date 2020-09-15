@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.acodersspringapp.model.TradeInfoModel;
 import com.example.acodersspringapp.model.request.NewTradesRequestModel;
+import com.example.acodersspringapp.model.response.PortfolioResponseModel;
 import com.example.acodersspringapp.service.TokenService;
 import com.example.acodersspringapp.service.TradeService;
 
@@ -40,7 +41,6 @@ public class TradeController {
 	@GetMapping(value="/{username}")
 	public ResponseEntity<?> getTradeHistory(@PathVariable String username, @RequestHeader("token") String token) {
 		boolean isTokenValid = tokenService.isValidToken(token);
-		String newToken;
 		if (!isTokenValid) {
 			return ResponseEntity.badRequest().body("Token not valid");
 		}
@@ -50,6 +50,20 @@ public class TradeController {
 		}
 		List<TradeInfoModel> trades = tradeService.getTradeHistor1yByUsername(username);
 		return ResponseEntity.ok(trades);
+	}
+	
+	@GetMapping(value="/{username}/portfolio")
+	public ResponseEntity<?> getPorfolio(@PathVariable String username,@RequestHeader("token") String token) {
+		boolean isTokenValid = tokenService.isValidToken(token);
+		if (!isTokenValid) {
+			return ResponseEntity.badRequest().body("Token not valid");
+		}
+		String tokenUsername = tokenService.getUsernameFromToken(token);
+		if (!tokenUsername.equals(username)) {
+			return ResponseEntity.badRequest().body("Not authoirized to view this page");
+		}
+		PortfolioResponseModel returnValue = tradeService.getPorfolioByUsername(username);
+		return ResponseEntity.ok(returnValue);
 	}
 	
 }

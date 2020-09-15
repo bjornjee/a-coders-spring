@@ -1,5 +1,6 @@
 package com.example.acodersspringapp.model;
 
+import com.example.acodersspringapp.entity.TradeEntity;
 import com.example.acodersspringapp.entity.TradeInstrument;
 
 import lombok.AllArgsConstructor;
@@ -15,4 +16,11 @@ public class AssetInfoModel {
 	private double totalCost;
 	private TradeInstrument instrument;
 	
+	public AssetInfoModel(TradeEntity e) {
+		ticker = e.getTicker();
+		quantity = e.getQuantity();
+		totalCost = e.getPrice();
+		instrument =e.getInstrument();
+	}
 }
+

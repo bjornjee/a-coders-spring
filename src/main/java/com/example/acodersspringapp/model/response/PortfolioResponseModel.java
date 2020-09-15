@@ -1,5 +1,6 @@
 package com.example.acodersspringapp.model.response;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.example.acodersspringapp.model.AssetInfoModel;
@@ -12,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortfolioResponseModel {
-	List<AssetInfoModel> assets;
+	HashMap<String,List<AssetInfoModel>> assets;
 }
