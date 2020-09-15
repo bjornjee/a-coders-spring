@@ -70,6 +70,9 @@ public class TradeService {
 			case "STOCK":
 				out = TradeInstrument.STOCK;
 				break;
+			case "ETF":
+				out = TradeInstrument.ETF;
+				break;
 		}
 		return out;
 	}
