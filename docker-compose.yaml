@@ -1,0 +1,39 @@
+version: '3.0'
+
+volumes:
+  mongodbvol:
+
+services:
+  mongodb:
+    container_name: mongodb
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    image: mongodb
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongodbvol:/data/db
+
+  spring-app:
+    container_name: spring-app
+    build:
+      context: ./a-coders-spring-app
+      dockerfile: Dockerfile-spring
+    image: spring-app
+    ports:
+      - "8080:8080"
+    links:
+      - mongodb:mongodb
+
+  simulator:
+    container_name: simulator
+    build:
+      context: ./a-coders-trade-simulator
+      dockerfile: Dockerfile-spring
+    image: simulator
+    links:
+      - mongodb:mongodb
+      post:
+        - "8081:8080"
