@@ -26,6 +26,9 @@ services:
       - "8080:8080"
     links:
       - mongodb:mongodb
+    environment:
+      - DB_HOST=mongodb
+      - DB_NAME=acoders
 
   simulator:
     container_name: simulator
@@ -37,3 +40,7 @@ services:
       - mongodb:mongodb
     ports:
       - "8081:8080"
+    environment:
+      - DB_HOST=mongodb
+      - DB_NAME=acoders
+
