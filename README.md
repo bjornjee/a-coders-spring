@@ -11,4 +11,5 @@
 | `GET` | `/api/trade/{username}` | `token` | null | null | List of Trades |
 | `DELETE` | `/api/account/{username}` | `token` | null | null | null | Deactivates user |
 | `PUT` | `/api/account/{username}` | `token` | null | `username`,`password`,`email` | `token` | Updates user |
+| `GET` | `/api/market/data` | null | null | null | list of market data | details include: `ticker`; `quotePrice`; `volume`; `open`;`previousClose`;`peRatio` |
 
