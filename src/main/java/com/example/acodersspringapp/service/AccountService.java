@@ -5,7 +5,6 @@ import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import com.example.acodersspringapp.entity.AccountEntity;
 import com.example.acodersspringapp.model.request.RegisterRequestModel;

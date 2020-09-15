@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortfolioResponseModel {
-	HashMap<String,List<AssetInfoModel>> assets;
+	HashMap<String,List<AssetInfoModel>> portfolio;
 }

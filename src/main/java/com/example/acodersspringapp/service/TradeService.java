@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.acodersspringapp.entity.PortfolioEntity;
 import com.example.acodersspringapp.entity.TradeEntity;
 import com.example.acodersspringapp.entity.TradeInstrument;
 import com.example.acodersspringapp.entity.TradeState;
@@ -31,8 +30,8 @@ public class TradeService {
 	PortfolioRepository portfolioRepo;
 	
 	public void acceptTrades(String username, NewTradesRequestModel model) {
-		TradeType type = model.getType() == "BUY" ? TradeType.BUY : TradeType.SELL;
-		TradeState state = TradeState.CREATED;
+		TradeType type = model.getType().toUpperCase().equals("BUY") ? TradeType.BUY : TradeType.SELL;
+		TradeState state = TradeState.FILLED;
 		TradeInstrument instrument = getInstrument(model.getInstrument());
 		Date now = new Date(System.currentTimeMillis());
 		//Insert into trade collection
@@ -105,7 +104,7 @@ public class TradeService {
 			convertedPortfolio.put(set.getKey(),assetList);
 		}
 		
-		returnValue.setAssets(convertedPortfolio);
+		returnValue.setPortfolio(convertedPortfolio);
 		return returnValue;
 	}
 
