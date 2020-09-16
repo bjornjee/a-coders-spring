@@ -15,6 +15,7 @@ public class MarketDataEntity {
 
 	@Id
 	private long id;
+	private String datetime;
 	private String ticker;
 	private double quotePrice;
 	private int volume;
