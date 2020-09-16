@@ -16,6 +16,20 @@ services:
     volumes:
       - mongodbvol:/data/db
 
+  scrapper:
+    container_name: scrapper
+    build:
+      context: ./a-coders-python
+      dockerfile: Dockerfile-python
+    image: scrapper
+    links:
+      - mongodb:mongodb
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=mongodb
+      - DB_NAME=acoders
+
   spring-app:
     container_name: spring-app
     build:
@@ -43,18 +57,3 @@ services:
     environment:
       - DB_HOST=mongodb
       - DB_NAME=acoders
-
-  scrapper:
-    container_name: scrapper
-    build:
-      context: ./a-coders-python
-      dockerfile: Dockerfile-python
-    image: scrapper
-    links:
-      - mongodb:mongodb
-    ports:
-      - "5000:5000"
-    environment:
-      - DB_HOST=mongodb
-      - DB_NAME=acoders
-
