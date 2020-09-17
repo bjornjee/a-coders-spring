@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class MarketDataResponseModel {
 
 	private String ticker;
+	private String instrument;
 	private String lastScrapeTime;
 	private double quotePrice;
 	private int volume;
@@ -22,6 +23,7 @@ public class MarketDataResponseModel {
 	public MarketDataResponseModel(MarketDataEntity e) {
 		this.lastScrapeTime = e.getDatetime();
 		this.ticker = e.getTicker();
+		this.instrument = e.getInstrument();
 		this.quotePrice = e.getQuotePrice();
 		this.volume = e.getVolume();
 		this.open = e.getOpen();
