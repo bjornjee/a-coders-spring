@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.acodersspringapp.model.AssetInfoModel;
 import com.example.acodersspringapp.model.TradeInfoModel;
 import com.example.acodersspringapp.model.request.NewTradesRequestModel;
 import com.example.acodersspringapp.model.response.PortfolioResponseModel;
@@ -64,7 +65,7 @@ public class TradeController {
 		if (!tokenUsername.equals(username)) {
 			return ResponseEntity.badRequest().body("Not authoirized to view this page");
 		}
-		PortfolioResponseModel returnValue = tradeService.getPorfolioByUsername(username);
+		List<AssetInfoModel> returnValue = tradeService.getPorfolioByUsername(username);
 		return ResponseEntity.ok(returnValue);
 	}
 	

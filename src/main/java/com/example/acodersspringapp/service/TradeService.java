@@ -78,8 +78,7 @@ public class TradeService {
 	}
 
 
-	public PortfolioResponseModel getPorfolioByUsername(String username) {
-		PortfolioResponseModel returnValue = new PortfolioResponseModel();
+	public List<AssetInfoModel> getPorfolioByUsername(String username) {
 		List<TradeEntity> trades = tradeRepo.findAllFilledTradesByUsername(username);
 		//Loop through trades by instruments and get aggregate price
 		HashMap<String,HashMap<String,AssetInfoModel>> portfolio = new HashMap<>();
@@ -122,8 +121,8 @@ public class TradeService {
 			portfolioList.addAll(set.getValue());
 		}
 		
-		returnValue.setPortfolio(portfolioList);
-		return returnValue;
+		//returnValue.setPortfolio(portfolioList);
+		return portfolioList;
 	}
 
 

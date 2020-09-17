@@ -1,5 +1,7 @@
 package com.example.acodersspringapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.acodersspringapp.model.AssetInfoModel;
 import com.example.acodersspringapp.model.request.UpdateUserRequestModel;
 import com.example.acodersspringapp.model.response.PortfolioResponseModel;
 import com.example.acodersspringapp.service.AccountService;
@@ -41,7 +44,7 @@ public class AccountController {
 		if (tokenUsername != username) {
 			return ResponseEntity.badRequest().body("Not authoirized to view this page");
 		}
-		PortfolioResponseModel portfolio = tradeService.getPorfolioByUsername(username);
+		List<AssetInfoModel> portfolio = tradeService.getPorfolioByUsername(username);
 		return ResponseEntity.ok(portfolio);
 	}
 	
