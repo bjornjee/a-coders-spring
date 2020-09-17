@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.acodersspringapp.model.request.RegisterRequestModel;
+import com.example.acodersspringapp.model.response.TokenResponseModel;
 import com.example.acodersspringapp.service.AccountService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 		
-		return ResponseEntity.ok(token);
+		return ResponseEntity.ok(new TokenResponseModel(token));
 	}
 	
 	@GetMapping(value="/login")
@@ -44,6 +45,6 @@ public class AuthController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-		return ResponseEntity.ok(token);
+		return ResponseEntity.ok(new TokenResponseModel(token));
 	}
 }

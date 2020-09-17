@@ -15,6 +15,8 @@ services:
     restart: always
     volumes:
       - mongodbvol:/data/db
+    environment:
+      - TZ=Asia/Singapore
 
   scrapper:
     container_name: scrapper
@@ -29,6 +31,7 @@ services:
     environment:
       - DB_HOST=mongodb
       - DB_NAME=acoders
+      - TZ=Asia/Singapore
 
   spring-app:
     container_name: spring-app
@@ -43,6 +46,7 @@ services:
     environment:
       - DB_HOST=mongodb
       - DB_NAME=acoders
+      - TZ=Asia/Singapore
 
   simulator:
     container_name: simulator
@@ -57,3 +61,4 @@ services:
     environment:
       - DB_HOST=mongodb
       - DB_NAME=acoders
+      - TZ=Asia/Singapore

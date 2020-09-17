@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.acodersspringapp.entity.AccountEntity;
 import com.example.acodersspringapp.model.request.RegisterRequestModel;
 import com.example.acodersspringapp.model.request.UpdateUserRequestModel;
+import com.example.acodersspringapp.model.response.TokenResponseModel;
 import com.example.acodersspringapp.repository.AccountRepository;
 import com.example.acodersspringapp.utils.TokenUtil;
 
@@ -94,7 +95,8 @@ public class AccountService {
 		acc.setEmail(newEmail);
 		accountRepo.save(acc);
 		//Generate new token
-		return tokenUtil.encoder(newUsername, encrPassword);
+		String token = tokenUtil.encoder(newUsername, encrPassword);
+		return token;
 	}
 
 }
