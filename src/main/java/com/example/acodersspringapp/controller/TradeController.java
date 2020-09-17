@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.acodersspringapp.model.AssetInfoModel;
+import com.example.acodersspringapp.model.CurrentHoldingAssetInfo;
 import com.example.acodersspringapp.model.TradeInfoModel;
 import com.example.acodersspringapp.model.request.NewTradesRequestModel;
 import com.example.acodersspringapp.model.response.PortfolioResponseModel;
@@ -66,6 +67,20 @@ public class TradeController {
 			return ResponseEntity.badRequest().body("Not authoirized to view this page");
 		}
 		List<AssetInfoModel> returnValue = tradeService.getPorfolioByUsername(username);
+		return ResponseEntity.ok(returnValue);
+	}
+	
+	@GetMapping(value="/{username}/holdingStock")
+	public ResponseEntity<?> getCurrentStocks(@PathVariable String username, @RequestHeader("token") String token) {
+		boolean isTokenValid = tokenService.isValidToken(token);
+		if (!isTokenValid) {
+			return ResponseEntity.badRequest().body("Token not valid");
+		}
+		String tokenUsername = tokenService.getUsernameFromToken(token);
+		if (!tokenUsername.equals(username)) {
+			return ResponseEntity.badRequest().body("Not authoirized to view this page");
+		}
+		List<CurrentHoldingAssetInfo> returnValue = tradeService.getCurrentStocksByUsername(username);
 		return ResponseEntity.ok(returnValue);
 	}
 	

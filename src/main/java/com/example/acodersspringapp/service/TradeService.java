@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.acodersspringapp.entity.MarketDataEntity;
 import com.example.acodersspringapp.entity.TradeEntity;
 import com.example.acodersspringapp.entity.TradeInstrument;
 import com.example.acodersspringapp.entity.TradeState;
 import com.example.acodersspringapp.entity.TradeType;
 import com.example.acodersspringapp.model.AssetInfoModel;
+import com.example.acodersspringapp.model.CurrentHoldingAssetInfo;
 import com.example.acodersspringapp.model.TradeInfoModel;
 import com.example.acodersspringapp.model.request.NewTradesRequestModel;
 import com.example.acodersspringapp.model.response.PortfolioResponseModel;
+import com.example.acodersspringapp.repository.MarketRepository;
 import com.example.acodersspringapp.repository.PortfolioRepository;
 import com.example.acodersspringapp.repository.TradeRepository;
 
@@ -28,6 +31,8 @@ public class TradeService {
 	TradeRepository tradeRepo;
 	@Autowired
 	PortfolioRepository portfolioRepo;
+	@Autowired
+	MarketRepository marketRepo;
 	
 	public void acceptTrades(String username, NewTradesRequestModel model) {
 		TradeType type = model.getType().toUpperCase().equals("BUY") ? TradeType.BUY : TradeType.SELL;
@@ -129,5 +134,31 @@ public class TradeService {
 	public List<TradeInfoModel> getTradeHistor1yByUsername(String username) {
 		List<TradeEntity> tradeData = tradeRepo.findAllByUsername(username);
 		return tradeData.stream().map(TradeInfoModel::new).collect(Collectors.toList());
+	}
+
+
+	public List<CurrentHoldingAssetInfo> getCurrentStocksByUsername(String username) {
+		List<TradeEntity> filledTrades = tradeRepo.findAllFilledTradesByUsername(username);
+		// Aggregate 
+		HashMap<String, CurrentHoldingAssetInfo> mapTrades = new HashMap<>();
+		for (TradeEntity trade : filledTrades) {
+			String currTicker = trade.getTicker();
+			if (! mapTrades.containsKey(currTicker)) {
+				mapTrades.put(currTicker, new CurrentHoldingAssetInfo(trade));
+			} else {
+				CurrentHoldingAssetInfo cummulativeTrade = mapTrades.get(currTicker);
+				int delta = trade.getType().equals(TradeType.BUY) ? trade.getQuantity() : - trade.getQuantity();
+				cummulativeTrade.setQuantity(cummulativeTrade.getQuantity() + delta);
+			}
+		}
+		//Convert to list
+		List<CurrentHoldingAssetInfo> returnValue =  new ArrayList<>();
+		for (Map.Entry<String,CurrentHoldingAssetInfo> set : mapTrades.entrySet()) {
+			CurrentHoldingAssetInfo asset =  set.getValue();
+			MarketDataEntity data = marketRepo.getOneByTicker(asset.getTicker());
+			asset.setPrice(data.getQuotePrice());
+			returnValue.add(asset);
+		}
+		return returnValue;
 	}
 }
