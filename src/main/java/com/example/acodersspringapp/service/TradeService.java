@@ -117,7 +117,12 @@ public class TradeService {
 			convertedPortfolio.put(set.getKey(),assetList);
 		}
 		
-		returnValue.setPortfolio(convertedPortfolio);
+		List<AssetInfoModel> portfolioList = new ArrayList<>();
+		for (Map.Entry<String,List<AssetInfoModel>> set: convertedPortfolio.entrySet()) {
+			portfolioList.addAll(set.getValue());
+		}
+		
+		returnValue.setPortfolio(portfolioList);
 		return returnValue;
 	}
 
