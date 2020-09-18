@@ -20,7 +20,7 @@ public class TradeEntity {
 	@Id
     private long id;
     private String username;
-    private Date created = new Date(System.currentTimeMillis());
+    private Date created;
     private TradeState state = TradeState.CREATED;
     private TradeType type;
     private TradeInstrument instrument;

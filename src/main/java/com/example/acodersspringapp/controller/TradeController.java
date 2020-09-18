@@ -52,7 +52,7 @@ public class TradeController {
 		if (!tokenUsername.equals(username)) {
 			return ResponseEntity.badRequest().body("Not authoirized to view this page");
 		}
-		List<TradeInfoModel> trades = tradeService.getTradeHistor1yByUsername(username);
+		List<TradeInfoModel> trades = tradeService.getTradeHistoryByUsername(username);
 		return ResponseEntity.ok(trades);
 	}
 	

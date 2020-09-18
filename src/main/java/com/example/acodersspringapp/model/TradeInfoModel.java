@@ -1,6 +1,7 @@
 package com.example.acodersspringapp.model;
 
-import java.util.Date;
+
+import java.text.SimpleDateFormat;
 
 import com.example.acodersspringapp.entity.TradeEntity;
 import com.example.acodersspringapp.entity.TradeInstrument;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TradeInfoModel {
-    private Date created;
+    private String created;
     private TradeState state;
     private TradeType type;
     private TradeInstrument instrument;
@@ -24,7 +25,8 @@ public class TradeInfoModel {
     private double price;
     
     public TradeInfoModel(TradeEntity e) {
-    	this.created = e.getCreated();
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    	this.created = formatter.format(e.getCreated());
     	this.state = e.getState();
     	this.type = e.getType();
     	this.instrument = e.getInstrument();
