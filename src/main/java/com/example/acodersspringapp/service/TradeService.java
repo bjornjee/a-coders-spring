@@ -148,6 +148,7 @@ public class TradeService {
 				CurrentHoldingAssetInfo cummulativeTrade = mapTrades.get(currTicker);
 				int delta = trade.getType().equals(TradeType.BUY) ? trade.getQuantity() : -trade.getQuantity();
 				cummulativeTrade.setQuantity(cummulativeTrade.getQuantity() + delta);
+				mapTrades.put(currTicker,cummulativeTrade);
 			}
 		}
 		// Convert to list
