@@ -154,13 +154,11 @@ public class TradeService {
 		List<CurrentHoldingAssetInfo> returnValue = new ArrayList<>();
 		for (Map.Entry<String, CurrentHoldingAssetInfo> set : mapTrades.entrySet()) {
 			CurrentHoldingAssetInfo asset = set.getValue();
-			int currAssetQuantity = asset.getQuantity();
-			if (currAssetQuantity <= 0) {
-				continue;
-			}
 			MarketDataEntity data = marketRepo.getOneByTicker(asset.getTicker());
 			asset.setPrice(data.getQuotePrice());
-			returnValue.add(asset);
+			if (asset.getQuantity() > 0) {
+				returnValue.add(asset);
+			}
 		}
 		return returnValue;
 	}
