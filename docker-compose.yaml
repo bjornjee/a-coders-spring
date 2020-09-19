@@ -62,3 +62,14 @@ services:
       - DB_HOST=mongodb
       - DB_NAME=acoders
       - TZ=Asia/Singapore
+  angular:
+    container_name: angular
+    build:
+      context: ./a-coders-angular
+      dockerfile: Dockerfile-angular
+    image: angular
+    ports:
+      - "4200:4200"
+    environment:
+      - API_URL=spring-app
+      - TZ=Asia/Singapore
